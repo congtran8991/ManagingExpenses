@@ -1,9 +1,0 @@
-global:
-  scrape_interval: 5s # Cứ mỗi 5 giây qua lấy dữ liệu 1 lần
-
-scrape_configs:
-  - job_name: 'nestjs-monitoring'
-    metrics_path: '/metrics'
-    static_configs:
-      # 'trello_nestjs_container' là tên container NestJS của bạn trong mạng Docker
-      - targets: ['trello_nestjs_container:3000']
