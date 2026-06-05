@@ -5,7 +5,6 @@ import configuration from './config/configuration';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { BoardsModule } from './modules/boards/boards.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -21,7 +20,6 @@ import { MetricsModule } from './modules/metrics/metrics.module';
     PrismaModule,
     UsersModule,
     AuthModule,
-    BoardsModule,
   ],
   controllers: [AppController],
   providers: [

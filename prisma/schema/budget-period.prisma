@@ -1,0 +1,18 @@
+model BudgetPeriod {
+    id     Int    @id @default(autoincrement())
+    userId Int    @map("user_id")
+    title  String @db.VarChar(100)
+
+    // Audit Logs (UTC+0)
+    createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+    updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
+    createdBy Int      @map("created_by")
+    updatedBy Int      @map("updated_by")
+
+    // Quan hệ (Relations)
+    user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+    categories   BudgetCategory[]
+    transactions BudgetTransaction[]
+
+    @@map("budget_periods")
+}

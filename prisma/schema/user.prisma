@@ -1,14 +1,20 @@
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String?
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           Int    @id @default(autoincrement())
+  username     String @db.VarChar(50)
+  email        String @unique @db.VarChar(100)
+  passwordHash String @map("password_hash") @db.VarChar(255)
 
-  boards      Board[]  @relation("BoardMembers")
-  ownedBoards Board[]  @relation("BoardOwner")
-  cards       Card[]   @relation("CardAssignees")
+  // Audit Logs (UTC+0)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
+  createdBy Int?     @map("created_by") // NULLABLE riêng cho bảng này khi tạo user đầu tiên
+  updatedBy Int?     @map("updated_by")
+
+  // Quan hệ (Relations)
+  wallets            Wallet[]
+  budgetPeriods      BudgetPeriod[]
+  recurringTemplates RecurringTemplate[]
+  savingsGoals       SavingsGoal[]
 
   @@map("users")
 }
