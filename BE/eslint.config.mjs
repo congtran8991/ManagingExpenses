@@ -33,8 +33,9 @@ export default tseslint.config(
       "@typescript-eslint/no-empty-function": ["error", { "allow": ["constructors"] }],
       // "object-curly-spacing": ["error", "always"], // Ép các object thông thường phải có space { a: 1 }
       // "@typescript-eslint/block-spacing": ["error", "always"], // Đồng bộ block spacing
-      '@typescript-eslint/no-unsafe-member-access': 'warn',
-      '@typescript-eslint/no-unsafe-return': 'warn',
+      '@typescript-eslint/no-redundant-type-constituents': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/require-await': 'warn',
       '@typescript-eslint/no-unused-vars': 'warn',

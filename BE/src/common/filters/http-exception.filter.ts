@@ -13,8 +13,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
     let message: string | string[] = 'Internal server error';
 
-    console.log(exception, 'exception');
-
     // 2. TRƯỜNG HỢP 1: Nếu là lỗi thông thường của NestJS (HttpException như 404, 400 Validation...)
     if (exception instanceof HttpException) {
       status = exception.getStatus();

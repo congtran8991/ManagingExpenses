@@ -1,0 +1,13 @@
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique @db.Text
+  userId    Int      @map("user_id")
+  isRevoked Boolean  @default(false) @map("is_revoked") // Dùng để hủy token khi cần
+  expiresAt DateTime @map("expires_at") @db.Timestamp(0)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+
+  // Quan hệ
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
