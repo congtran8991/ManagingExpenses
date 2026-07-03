@@ -24,7 +24,7 @@ export class AuthService {
       throw new UnauthorizedException('Email hoặc mật khẩu không chính xác');
     }
 
-    const isPasswordValid = await bcrypt.compare(dto.password, user.passwordHash as string);
+    const isPasswordValid = await bcrypt.compare(dto.password, user.passwordHash);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Email hoặc mật khẩu không chính xác');
     }
@@ -32,9 +32,28 @@ export class AuthService {
     return user;
   }
 
+  async generateTokens(user: { id: number; email: string }) {
+    const payload = { sub: user.id, email: user.email };
+
+    // 1. Tạo Access Token sống 15 phút
+    const accessToken = await this.jwtService.signAsync(payload, {
+      expiresIn: '15m',
+    });
+
+    // 2. Tạo Refresh Token sống 7 ngày
+    const refreshToken = await this.jwtService.signAsync(payload, {
+      expiresIn: '7d',
+    });
+
+    return { accessToken, refreshToken };
+  }
+
   async login(dto: LoginDto) {
     const user = await this.validateUser(dto);
-    const payload = { email: user.email, sub: user.id };
+
+    const payload = { email: user.email, id: user.id };
+
+    const { accessToken, refreshToken } = await this.generateTokens(payload);
 
     return {
       user: {
@@ -42,7 +61,8 @@ export class AuthService {
         email: user.email,
         username: user.username,
       },
-      accessToken: this.jwtService.sign(payload),
+      accessToken,
+      refreshToken,
     };
   }
 }

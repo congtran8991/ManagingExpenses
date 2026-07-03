@@ -36,7 +36,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TransformInterceptor());
 
   // Start Server
-  const port = configService.get<number>('app.port') || 3000;
+  const port = configService.get<number>('app.port') || 3001;
   await app.listen(port);
   console.log(`🚀 Application is running on: http://localhost:${port}/api/v1`);
 }
