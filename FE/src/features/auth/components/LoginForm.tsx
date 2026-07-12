@@ -11,7 +11,7 @@ export const LoginForm = () => {
   const { mutate, isPending } = useLoginMutation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  console.log('s');
   const handleLogin = (e: React.ChangeEvent) => {
     e.preventDefault();
     e.stopPropagation();
