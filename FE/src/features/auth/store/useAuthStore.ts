@@ -21,6 +21,7 @@ export const authActions = {
     StorageEnhance.set(STORAGE_KEYS.ACCESS_TOKEN, token);
     StorageEnhance.set(STORAGE_KEYS.USER, user);
     useAuthStoreBase.setState({ user });
+    console.log(3);
   },
   logout: () => {
     StorageEnhance.clear();
