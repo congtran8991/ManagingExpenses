@@ -65,4 +65,25 @@ export class AuthService {
       refreshToken,
     };
   }
+
+  async refreshTokens(refreshToken: string) {
+    try {
+      // 1. Verify xem Refresh Token có hợp lệ/hết hạn không
+      const payload = await this.jwtService.verifyAsync(refreshToken, {
+        secret: process.env.REFRESH_TOKEN_SECRET,
+      });
+
+      // 2. Lấy thông tin user từ database để đảm bảo user không bị khóa/xóa
+      const user = await this.usersService.findById(payload.id);
+      if (!user) throw new UnauthorizedException('Người dùng không tồn tại');
+
+      // 3. Gọi lại hàm sinh cặp token mới (Hàm dùng chung chúng ta đã viết bằng DI)
+      const tokens = await this.generateTokens({ id: user.id, email: user.email });
+
+      return tokens;
+    } catch (error) {
+      // Nếu Refresh Token cũng hết hạn nốt -> Bắt buộc Logout, đá user ra màn Login
+      throw new UnauthorizedException('Phiên đăng nhập đã hết hạn hoàn toàn. Vui lòng đăng nhập lại.');
+    }
+  }
 }

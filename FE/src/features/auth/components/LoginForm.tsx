@@ -1,26 +1,51 @@
 import React, { useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
 import { useLoginMutation } from '../hooks/useAuthQueries';
 import { Input } from '@/components/common/ui/Input';
-import { Button } from '@/components/common/ui/Button'
+import { Button } from '@/components/common/ui/Button';
+import { authActions } from '../store/useAuthStore';
 
 export const LoginForm = () => {
-    const loginMutation = useLoginMutation();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-    const handleLogin = (e: React.FormEvent) => {
-        e.preventDefault();
-        window.location.href = '/dashboard';
-        // loginMutation.mutate({ email, password }, {
-        //     onSuccess: () => { window.location.href = '/dashboard'; }
-        // });
-    };
+  const { mutate, isPending } = useLoginMutation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-    return (
-        <form onSubmit={handleLogin} className="space-y-4">
-            <Input type="email" placeholder="Nhập Email" value={email} onChange={e => setEmail(e.target.value)} required />
-            <Input type="password" placeholder="Mật khẩu" value={password} onChange={e => setPassword(e.target.value)} required />
-            <Button type="submit" className="w-full" disabled={loginMutation.isPending}>Vào hệ thống</Button>
-        </form>
+  const handleLogin = (e: React.ChangeEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    mutate(
+      { email, password },
+      {
+        onSuccess: (data) => {
+          console.log('svhgshvhsvhsh', data);
+          navigate({ to: '/dashboard' });
+        },
+      }
     );
+  };
+
+  return (
+    <form onSubmit={handleLogin} className="space-y-4">
+      <Input
+        type="email"
+        placeholder="Nhập Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <Input
+        type="password"
+        placeholder="Mật khẩu"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <Button type="submit" className="w-full" disabled={isPending}>
+        Vào hệ thống
+      </Button>
+    </form>
+  );
 };

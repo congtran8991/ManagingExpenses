@@ -1,13 +1,23 @@
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { Prisma } from '@prisma/client'; // Import thêm Prisma để check type
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
+  private readonly logger = new Logger(HttpExceptionFilter.name);
+
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
+
+    const methodName = request.route?.stack?.[0]?.name || 'unknownMethod';
+
+    const errorPath = `${request.method} ${request.url}`;
+
+    // 🌟 CÁCH ĐÚNG: Đảm bảo terminal sẽ in chữ MÀU ĐỎ
+    this.logger.error('PATH: ' + errorPath);
+    this.logger.error('METHOD', methodName);
 
     // 1. Khởi tạo các giá trị mặc định (Lỗi 500)
     let status = HttpStatus.INTERNAL_SERVER_ERROR;

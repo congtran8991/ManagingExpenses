@@ -1,0 +1,33 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+build
+coverage
+
+# Vite
+.vite
+
+# Logs
+*.log
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment files
+.env
+.env.*
+
+# IDE
+.vscode
+.idea
+
+# Git
+.git
+
+# Generated files
+*.min.js
+*.min.css
