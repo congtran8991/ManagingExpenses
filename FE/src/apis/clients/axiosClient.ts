@@ -83,7 +83,7 @@ export class APIManager {
       const res: AxiosResponse<any> = await this.executeRequest({ method, url, configs, body });
 
       if (!res?.data?.success) throw { ...res?.data, status: res.status };
-
+      console.log(2);
       if (showToast) {
         toast.success(res.data.message);
       }
