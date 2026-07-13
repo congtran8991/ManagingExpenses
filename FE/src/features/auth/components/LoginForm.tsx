@@ -20,7 +20,7 @@ export const LoginForm = () => {
       { email, password },
       {
         onSuccess: (data) => {
-          console.log('shvhs1');
+          console.log('shvhs1ư');
           navigate({ to: '/dashboard' });
         },
       }
