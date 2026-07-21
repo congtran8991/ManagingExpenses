@@ -9,6 +9,7 @@ import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MetricsModule } from './modules/metrics/metrics.module';
+import { WalletsModule } from './modules/wallets/wallets.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { MetricsModule } from './modules/metrics/metrics.module';
     PrismaModule,
     UsersModule,
     AuthModule,
+    WalletsModule,
   ],
   controllers: [AppController],
   providers: [
@@ -30,4 +32,4 @@ import { MetricsModule } from './modules/metrics/metrics.module';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

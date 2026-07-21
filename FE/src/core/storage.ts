@@ -9,7 +9,9 @@ class StorageEnhance {
    */
   set = (key: TStorageKey, value: any): void => {
     try {
-      localStorage.setItem(key, JSON.stringify(value));
+      // 🌟 NẾU LÀ STRING THÌ LƯU THẲNG, KHÔNG STRINGIFY NỮA
+      const valueToStore = typeof value === 'string' ? value : JSON.stringify(value);
+      localStorage.setItem(key, valueToStore);
     } catch (error) {
       console.error(`[StorageEnhance] Lỗi khi set key "${key}":`, error);
     }
@@ -24,10 +26,14 @@ class StorageEnhance {
     if (!value) return undefined;
 
     try {
-      return JSON.parse(value) as T;
+      // 🌟 NẾU LÀ CHUỖI JSON HỢP LỆ THÌ MỚI PARSE, KHÔNG THÌ TRẢ VỀ CHUỖI THUẦN
+      if (value.startsWith('{') || value.startsWith('[')) {
+        return JSON.parse(value) as T;
+      }
+      return value as unknown as T;
     } catch (error) {
       console.error(`[StorageEnhance] Lỗi khi parse JSON cho key "${key}":`, error);
-      return undefined; // Trả về undefined an toàn thay vì làm sập ứng dụng
+      return value as unknown as T;
     }
   };
 

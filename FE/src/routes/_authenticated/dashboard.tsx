@@ -8,8 +8,10 @@ export const Route = createFileRoute('/_authenticated/dashboard')({
 });
 
 function DashboardPage() {
-  const { data: wallets = [] } = useGetWallets();
-  const { data: txs = [] } = useGetTransactions();
+  // const { data: wallets = [] } = useGetWallets();
+  // const { data: txs = [] } = useGetTransactions();
+  const wallets = [] as any;
+  const txs = [] as any;
 
   const total = wallets.reduce((sum, w) => sum + Number(w.balance), 0);
   // Lấy 5 giao dịch gần đây nhất để hiển thị nhanh

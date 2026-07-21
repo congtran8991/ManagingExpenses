@@ -4,6 +4,10 @@ model Wallet {
     name    String  @db.VarChar(100)
     balance Decimal @default(0.00) @db.Decimal(15, 2)
 
+    type     String  @default("CASH") @db.VarChar(20)      // CASH, BANK, CREDIT...
+
+    color    String? @db.VarChar(50)
+
     // Audit Logs (UTC+0)
     createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(0)
     updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp(0)

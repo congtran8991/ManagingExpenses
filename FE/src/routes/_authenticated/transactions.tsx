@@ -9,8 +9,10 @@ export const Route = createFileRoute('/_authenticated/transactions')({
 });
 
 function TransactionsPage() {
-  const { data: txs = [] } = useGetTransactions();
-  const { data: wallets = [] } = useGetWallets();
+  // const { data: txs = [] } = useGetTransactions();
+  // const { data: wallets = [] } = useGetWallets();
+
+  const txs = [] as any;
 
   // Các state phục vụ bộ lọc tìm kiếm nâng cao
   const [searchNote, setSearchNote] = useState('');

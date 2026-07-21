@@ -2,6 +2,8 @@ export const API_ENDPOINTS = {
   AUTH: {
     LOGIN: '/v1/auth/login',
     REGISTER: '/v1/auth/register',
+    GET_ME: '/v1/auth/me',
+    REFRESH_TOKEN: '/v1/auth/refresh-token',
   },
   WALLETS: '/v1/wallets',
   PERIODS: {

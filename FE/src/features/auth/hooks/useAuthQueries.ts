@@ -16,7 +16,7 @@ export const useLoginMutation = () => {
       return res.data?.data;
     },
     onSuccess: (data) => {
-      authActions.setLoginSuccess(data.user, data.accessToken);
+      authActions.setLoginSuccess(data);
     },
   });
 };

@@ -27,9 +27,16 @@ export class AuthController {
     return this.authService.login(dto);
   }
 
+  @Public()
+  @Post('refresh-token')
+  @HttpCode(HttpStatus.OK)
+  async refreshToken(@Body() dto: { refreshToken: string }) {
+    return this.authService.refreshTokens(dto.refreshToken);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  async getMe(@GetUser() user: { id: number; username: string }) {
+  async getMe(@GetUser() user: { id: number }) {
     const userProfile = await this.usersService.getProfile(user.id);
 
     // 2. Trả về cấu trúc JSON sạch sẽ theo chuẩn BaseResponse của dự án

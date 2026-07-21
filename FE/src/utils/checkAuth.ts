@@ -6,6 +6,7 @@ import { useAuthStoreBase } from '@/features/auth';
 import StorageEnhance from '@/core/storage';
 
 export const checkAuthOnReload = async (): Promise<boolean> => {
+  console.log('hvhshvhsvhsh');
   const accessToken = StorageEnhance.get(STORAGE_KEYS.ACCESS_TOKEN);
 
   // 1. Kiểm tra nhanh xem local có token không, nếu không có thì không cần gọi API mất thời gian
@@ -26,6 +27,7 @@ export const checkAuthOnReload = async (): Promise<boolean> => {
 
     throw new Error('Xác thực thất bại');
   } catch (error) {
+    console.log(error, ' error');
     // 4. Lỗi (Token hết hạn/bị sửa đổi) -> Xóa sạch dữ liệu cũ và trả về thất bại
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');

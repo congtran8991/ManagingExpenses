@@ -1,17 +1,20 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config'; // 🌟 Import ConfigService
 import * as bcrypt from 'bcrypt';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { UserEntity } from '../users/entities/user.entity';
+import { ITokenPayload } from 'src/common/interfaces/auth.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-  ) { }
+    private readonly configService: ConfigService, // 🌟 Tiêm vào Constructor ở đây
+  ) {}
 
   async register(dto: RegisterDto) {
     const user = await this.usersService.create(dto);
@@ -37,11 +40,13 @@ export class AuthService {
 
     // 1. Tạo Access Token sống 15 phút
     const accessToken = await this.jwtService.signAsync(payload, {
-      expiresIn: '15m',
+      secret: this.configService.get<string>('ACCESS_TOKEN_SECRET'),
+      expiresIn: '10s',
     });
 
     // 2. Tạo Refresh Token sống 7 ngày
     const refreshToken = await this.jwtService.signAsync(payload, {
+      secret: this.configService.get<string>('REFRESH_TOKEN_SECRET'),
       expiresIn: '7d',
     });
 
@@ -69,12 +74,12 @@ export class AuthService {
   async refreshTokens(refreshToken: string) {
     try {
       // 1. Verify xem Refresh Token có hợp lệ/hết hạn không
-      const payload = await this.jwtService.verifyAsync(refreshToken, {
+      const payload = await this.jwtService.verifyAsync<ITokenPayload>(refreshToken, {
         secret: process.env.REFRESH_TOKEN_SECRET,
       });
 
       // 2. Lấy thông tin user từ database để đảm bảo user không bị khóa/xóa
-      const user = await this.usersService.findById(payload.id);
+      const user = await this.usersService.findById(payload.sub);
       if (!user) throw new UnauthorizedException('Người dùng không tồn tại');
 
       // 3. Gọi lại hàm sinh cặp token mới (Hàm dùng chung chúng ta đã viết bằng DI)
@@ -82,6 +87,7 @@ export class AuthService {
 
       return tokens;
     } catch (error) {
+      console.log(error, 'error');
       // Nếu Refresh Token cũng hết hạn nốt -> Bắt buộc Logout, đá user ra màn Login
       throw new UnauthorizedException('Phiên đăng nhập đã hết hạn hoàn toàn. Vui lòng đăng nhập lại.');
     }

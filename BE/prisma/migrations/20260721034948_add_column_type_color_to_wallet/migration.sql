@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "wallets" ADD COLUMN     "color" VARCHAR(50),
+ADD COLUMN     "type" VARCHAR(20) NOT NULL DEFAULT 'CASH';
